@@ -1,0 +1,58 @@
+# Environment variables (contains secrets)
+.env
+
+# Docker volumes data directories
+monitoring/prometheus/data/
+monitoring/grafana/data/
+monitoring/alertmanager/data/
+
+# Prometheus specific
+monitoring/prometheus/*.db
+monitoring/prometheus/wal/
+monitoring/prometheus/chunks_head/
+
+# Grafana specific  
+monitoring/grafana/data/
+monitoring/grafana/plugins/
+monitoring/grafana/*.db
+
+# Alertmanager specific
+monitoring/alertmanager/data/
+monitoring/alertmanager/*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Docker
+docker-compose.override.yml
+docker-compose.*.local.yml

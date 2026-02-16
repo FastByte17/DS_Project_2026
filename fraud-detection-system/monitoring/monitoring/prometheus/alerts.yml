@@ -1,0 +1,3 @@
+﻿groups:
+  - name: system_alerts
+    rules: []
