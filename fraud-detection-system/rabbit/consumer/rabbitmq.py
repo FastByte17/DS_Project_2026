@@ -42,13 +42,10 @@ class RabbitMQConsumer:
         try:
             message = json.loads(body)
             self.process_message(message)
-            ch.basic_ack(delivery_tag=method.delivery_tag)
-        except json.JSONDecodeError as e:
-            print(f"Dumping Invalid json: {e}")
-            ch.basic_nack(delivery_tag=method.delivery_tag)
+            ch.basic_ack(delivery_tag=method.delivery_tag, requeue=False )
         except Exception as e:
             print(f"Error: {e}")
-            ch.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
+            ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False )
 
     def start(self):
         self.initConnection()
