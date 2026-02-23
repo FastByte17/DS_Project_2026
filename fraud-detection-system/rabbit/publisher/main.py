@@ -28,6 +28,7 @@ async def root():
 
 @app.post("/publish")
 async def httpPublish():
+    
     try:
         publisher = getPublisher()
         
@@ -45,6 +46,5 @@ async def httpPublish():
         })
         return {"status": 100, "message": f"Published to queue {publisher.queue_name}"}
     except Exception as e:
-        print(e)
         return {"status": 404, "message": e}
 

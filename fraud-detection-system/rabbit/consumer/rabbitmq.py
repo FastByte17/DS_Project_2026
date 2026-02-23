@@ -22,7 +22,7 @@ class RabbitMQConsumer:
 
     def initConnection(self):        
         cred = pika.PlainCredentials(self.username, self.password)
-        self._connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host, credentials=cred))
+        self._connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host, credentials=cred, heartbeat=30, blocked_connection_timeout=300))
         self._channel = self._connection.channel()
 
         self._channel.queue_declare(queue=self.queue_name)
@@ -42,7 +42,7 @@ class RabbitMQConsumer:
         try:
             message = json.loads(body)
             self.process_message(message)
-            ch.basic_ack(delivery_tag=method.delivery_tag, requeue=False )
+            ch.basic_ack(delivery_tag=method.delivery_tag)
         except Exception as e:
             print(f"Error: {e}")
             ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False )
