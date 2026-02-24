@@ -73,11 +73,40 @@ services:
       - monitoring
     restart: unless-stopped
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-gpu
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    # GPU configuration
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              # Use all available GPUs
+              count: all
+              capabilities: [gpu]
+    environment:
+      # Optional: Set specific CUDA devices
+      - NVIDIA_VISIBLE_DEVICES=all
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 volumes:
   prometheus-data:
   grafana-data:
   alertmanager-data:
+  ollama_data:
 
 networks:
   monitoring:
     driver: bridge
+
+  
