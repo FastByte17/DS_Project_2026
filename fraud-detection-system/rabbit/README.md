@@ -27,3 +27,9 @@ Directory *./rabbit/consumer* contains the sample code for the consumer. <br>
 Directory *./rabbit/publisher* contains the sample code for the publisher. <br> 
 The rabbitmq.py has the needed basic functionality to connect to a queue and publish messages to that queue. <br>
 NOTE the main.py in publisher is more complex because it starts up a FastApi service so that publishing can be triggered via HTTP requests. 
+
+
+### RabbitMQ dashboard
+
+- Add prometheus as data source
+- Use rabbitmq dashboard template id: 10991
