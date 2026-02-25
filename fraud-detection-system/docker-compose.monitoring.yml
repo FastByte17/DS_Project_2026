@@ -73,10 +73,63 @@ services:
       - monitoring
     restart: unless-stopped
 
+  # Ollama - CPU version (recommended for most users)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: fraud-detection-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - monitoring
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:11434/api/tags || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Uncomment below if you have NVIDIA GPU
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: fraud-detection-ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama-data:/root/.ollama
+  #   networks:
+  #     - monitoring
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
+  #   environment:
+  #     - NVIDIA_VISIBLE_DEVICES=all
+  #   restart: unless-stopped
+
+  ml-service:
+    build: ./ml/
+    container_name: ml-service
+    ports:
+      - "8001:8001"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    networks:
+      - monitoring
+    depends_on:
+      - ollama
+      - prometheus
+    restart: unless-stopped
+
 volumes:
   prometheus-data:
   grafana-data:
   alertmanager-data:
+  ollama-data:
 
 networks:
   monitoring:
