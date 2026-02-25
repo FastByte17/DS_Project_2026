@@ -48,34 +48,45 @@ class FraudDetectionEngine:
     def apply_rules(self, cdr: Dict) -> Dict:
         """fast rule-based detection"""
         
-        if cdr['duration'] > 86400:  # > 24 hours
+        # Check if fraud_flag is already set
+        if cdr.get('fraud_flag', False):
             return {
                 'is_fraud': True,
-                'type': 'impossible_duration',
-                'reason': f"Call duration {cdr['duration']}s exceeds 24 hours"
+                'type': cdr.get('fraud_type', 'flagged'),
+                'reason': f"Record marked as fraudulent: {cdr.get('fraud_type', 'Unknown type')}"
             }
         
-        if cdr.get('calls_last_minute', 0) > 10:
+        # Check risk_score threshold
+        if cdr.get('risk_score', 0) > 0.8:
             return {
                 'is_fraud': True,
-                'type': 'sim_box_fraud',
-                'reason': f"{cdr['calls_last_minute']} calls in last minute"
+                'type': 'high_risk_score',
+                'reason': f"Risk score {cdr.get('risk_score', 0):.2f} exceeds threshold"
             }
         
-        if cdr['source_number'] in self.get_blacklist():
+        # Check if mobile number is in blacklist
+        if cdr.get('mobile_number') in self.get_blacklist():
             return {
                 'is_fraud': True,
                 'type': 'blacklisted_number',
-                'reason': f"Source number {cdr['source_number']} is blacklisted"
+                'reason': f"Mobile number {cdr.get('mobile_number')} is blacklisted"
             }
         
-        if cdr['destination_prefix'] in ['1-900', '+882', '+883']:
-            if cdr['duration'] > 300:  # > 5 minutes
-                return {
-                    'is_fraud': True,
-                    'type': 'premium_rate_abuse',
-                    'reason': f"Long call to premium rate number"
-                }
+        # Check if SIM status is suspicious
+        if cdr.get('sim_status', '').lower() in ['suspended', 'blocked', 'compromised']:
+            return {
+                'is_fraud': True,
+                'type': 'suspicious_sim_status',
+                'reason': f"SIM status: {cdr.get('sim_status')}"
+            }
+        
+        # Check if transaction amount is unusually high
+        if cdr.get('amount_eur', 0) > 10000:
+            return {
+                'is_fraud': True,
+                'type': 'high_value_transaction',
+                'reason': f"Transaction amount €{cdr.get('amount_eur', 0):.2f} exceeds limit"
+            }
         
         return {'is_fraud': False}
     
@@ -117,36 +128,39 @@ class FraudDetectionEngine:
     def create_llm_prompt(self, cdr: Dict, ml_score: float) -> str:
         """create structured prompt for llm"""
         
-        return f"""You are a telecom fraud detection expert. Analyze this Call Detail Record (CDR) and determine if it's fraudulent.
+        return f"""You are a telecom fraud detection expert. Analyze this customer transaction record and determine if it's fraudulent.
 
-CDR Details:
-- Call ID: {cdr.get('call_id')}
-- Source Number: {cdr.get('source_number')}
-- Destination Number: {cdr.get('destination_number')}
-- Duration: {cdr.get('duration')} seconds ({cdr.get('duration')//60} minutes)
-- Timestamp: {cdr.get('timestamp')}
-- Call Type: {cdr.get('call_type')}
-- Location: {cdr.get('location', 'Unknown')}
-- Cost: ${cdr.get('cost', 0):.2f}
+Customer & Transaction Details:
+- Customer ID: {cdr.get('customer_id')}
+- Full Name: {cdr.get('full_name')}
+- Mobile Number: {cdr.get('mobile_number')}
+- City: {cdr.get('city', 'Unknown')}
+- SIM Serial Number: {cdr.get('sim_serial_number')}
+- SIM Status: {cdr.get('sim_status', 'Unknown')}
+- IMEI: {cdr.get('imei')}
+- Transaction ID: {cdr.get('transaction_id')}
+- Timestamp: {cdr.get('time_stamp')}
+- Transaction Type: {cdr.get('type')}
+- Amount: €{cdr.get('amount_eur', 0):.2f}
 
 Context:
 - ML Model Fraud Score: {ml_score:.2f} (uncertain range)
-- Recent calls from this number: {cdr.get('recent_call_count', 0)}
-- Average call duration for this user: {cdr.get('avg_duration', 0)} seconds
-- Time of day: {cdr.get('hour_of_day')} (0-23)
+- Risk Score: {cdr.get('risk_score', 0):.2f}
+- Pre-flagged as Fraud: {cdr.get('fraud_flag', False)}
+- Reported Fraud Type: {cdr.get('fraud_type', 'None')}
 
 Known Fraud Patterns:
-1. SIM Box Fraud: Multiple short calls to different numbers in rapid succession
-2. Call Spoofing: Caller ID manipulation to appear as legitimate entity
-3. Premium Rate Fraud: Long calls to expensive international numbers
-4. Wangiri Fraud: Very short calls designed to prompt callback
-5. International Revenue Share Fraud (IRSF): Calls routed to premium numbers
+1. SIM Box Fraud: Compromised SIM cards used for fraudulent transactions
+2. Identity Fraud: Transactions initiated with stolen customer credentials
+3. High-Value Fraud: Unusual high-amount transactions from customer
+4. SIM Bypass Fraud: IMEI/SIM serial mismatch indicating device spoofing
+5. Account Takeover: Unusual transaction patterns inconsistent with customer behavior
 
 Respond ONLY in this JSON format:
 {{
     "is_fraud": true/false,
     "confidence": 0.0-1.0,
-    "fraud_type": "sim_box|call_spoofing|premium_rate|wangiri|irsf|none",
+    "fraud_type": "sim_box|identity|high_value|sim_bypass|account_takeover|none",
     "explanation": "Brief explanation of your reasoning",
     "suspicious_indicators": ["list", "of", "red", "flags"],
     "recommended_action": "block|monitor|allow"
@@ -184,13 +198,13 @@ Analysis:"""
     def extract_features(self, cdr: Dict) -> List:
         """Extract features for ML model"""
         return [
-            cdr.get('duration', 0),
-            cdr.get('hour_of_day', 0),
-            cdr.get('day_of_week', 0),
-            cdr.get('recent_call_count', 0),
-            cdr.get('avg_duration', 0),
-            1 if cdr.get('is_international', False) else 0,
-            cdr.get('cost', 0),
+            cdr.get('risk_score', 0.0),
+            cdr.get('amount_eur', 0),
+            1 if cdr.get('fraud_flag', False) else 0,
+            hash(cdr.get('sim_serial_number', '')) % 100,  # SIM serial hash
+            hash(cdr.get('imei', '')) % 100,  # IMEI hash
+            1 if cdr.get('sim_status', '').lower() == 'active' else 0,
+            len(cdr.get('full_name', '')),  # Name length as proxy for data quality
         ]
     
     def get_blacklist(self) -> set:
@@ -201,7 +215,7 @@ Analysis:"""
     # FastAPI endpoint
 from fastapi import FastAPI, HTTPException
 
-app = FastAPI()
+app = FastAPI(title="ML Fraud Detection Service")
 detector = FraudDetectionEngine()
 
 @app.post("/detect")
@@ -224,14 +238,18 @@ def send_alert_to_prometheus(cdr: Dict, detection_result: Dict):
             "alertname": "FraudDetected",
             "severity": "critical" if detection_result['confidence'] > 0.9 else "warning",
             "fraud_type": detection_result['fraud_type'],
-            "call_id": cdr['call_id'],
-            "source_number": cdr['source_number']
+            "customer_id": cdr.get('customer_id'),
+            "mobile_number": cdr.get('mobile_number'),
+            "transaction_id": cdr.get('transaction_id')
         },
         "annotations": {
             "summary": f"Fraud detected: {detection_result['fraud_type']}",
             "description": detection_result['explanation'],
             "confidence": str(detection_result['confidence']),
-            "method": detection_result['method']
+            "method": detection_result['method'],
+            "customer_name": cdr.get('full_name'),
+            "city": cdr.get('city'),
+            "amount_eur": str(cdr.get('amount_eur', 0))
         }
     }
     
