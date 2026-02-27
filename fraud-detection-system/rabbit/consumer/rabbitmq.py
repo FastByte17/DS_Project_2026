@@ -25,7 +25,7 @@ class RabbitMQConsumer:
         self._connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host, credentials=cred, heartbeat=30, blocked_connection_timeout=300))
         self._channel = self._connection.channel()
 
-        self._channel.queue_declare(queue=self.queue_name)
+        self._channel.queue_declare(queue=self.queue_name, durable=True, auto_delete=False)
 
     def closeConnection(self):
         self._channel.close()
