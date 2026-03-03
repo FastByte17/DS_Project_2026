@@ -37,6 +37,36 @@ Transaction Sources → CDR Ingestion Service → RabbitMQ (CDR Queue) → ML Tr
 - Docker and Docker Compose
 - Python 3.11+ (for local development)
 
+Create a .env file for environment settings in /cdr-ingestion directory. 
+
+Example content:
+```
+# =========================
+# RabbitMQ Configuration
+# =========================
+RABBITMQ_HOST=rabbitmq
+RABBITMQ_PORT=5672
+RABBITMQ_USER=myuser
+RABBITMQ_PASSWORD=mypassword
+RABBITMQ_QUEUE=CDR
+
+# =========================
+# PostgreSQL Configuration
+# =========================
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=cdr_database
+
+# =========================
+# Service Configuration
+# =========================
+SERVICE_NAME=SERVICE
+SERVICE_VERSION=1.0
+DEBUG=False
+```
+
 ### Running with Docker Compose
 
 ```powershell
