@@ -11,6 +11,7 @@ from prometheus_client import Counter, Histogram, generate_latest, REGISTRY
 from fastapi.responses import Response
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
+import os
 
 # prometheus metrics
 fraud_detected = Counter('fraud_detected_total', 'Frauds detected', ['method', 'fraud_type'])
@@ -293,25 +294,34 @@ detector = FraudDetectionEngine()
 
 # rabbitMQ Consumer
 class RabbitMQConsumer:
-    def __init__(self, host='rabbitmq', queue='cdr_queue'):
+    def __init__(
+            self, 
+            host='rabbitmq', 
+            queue='CDR', 
+            username=os.getenv("RABBITMQ_DEFAULT_USER", "NOT_SET"),
+            password=os.getenv("RABBITMQ_DEFAULT_PASS", "NOT_SET")
+            ):
         self.host = host
         self.queue = queue
         self.connection = None
         self.channel = None
+        self.username=username
+        self.password=password
         
     def connect(self):
         """connect to rabbitMQ with retry logic"""
         max_retries = 10
         retry_delay = 5
-        
         for attempt in range(max_retries):
             try:
+                _credentials = pika.PlainCredentials(self.username, self.password)
                 print(f"Connecting to rabbitMQ at {self.host}... (attempt {attempt + 1}/{max_retries})")
                 self.connection = pika.BlockingConnection(
                     pika.ConnectionParameters(
                         host=self.host,
                         heartbeat=600,
-                        blocked_connection_timeout=300
+                        blocked_connection_timeout=300,
+                        credentials=_credentials
                     )
                 )
                 self.channel = self.connection.channel()
@@ -437,7 +447,7 @@ async def startup_event():
     global consumer
     
     def start_consumer():
-        consumer = RabbitMQConsumer(host='rabbitmq', queue='cdr_queue')
+        consumer = RabbitMQConsumer(host='rabbitmq', queue='CDR')
         if consumer.connect():
             consumer.start_consuming()
     

@@ -117,12 +117,19 @@ services:
     ports:
       - "8001:8001"
     environment:
-      - OLLAMA_HOST=http://localhost:11434
-    networks:
-      - monitoring
+      OLLAMA_HOST: http://ollama:11434
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_DEFAULT_USER: myuser
+      RABBITMQ_DEFAULT_PASS: mypassword
     depends_on:
-      - ollama
-      - prometheus
+      rabbitmq:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      prometheus:
+        condition: service_started
+    networks:
+      - fraud-detection-network
     restart: unless-stopped
 
   cdr-ingestion:
@@ -200,23 +207,23 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  example_consumer_1:
-    build:
-      context: ./rabbit/
-      dockerfile: Dockerfile.consumer
-      # args: 
-      #   - 
-    container_name: example_consumer_1
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    environment:
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_DEFAULT_USER: myuser
-      RABBITMQ_DEFAULT_PASS: mypassword
-    command: ["python", "-u", "main.py"]
-    networks:
-      - fraud-detection-network
+  # example_consumer_1:
+  #   build:
+  #     context: ./rabbit/
+  #     dockerfile: Dockerfile.consumer
+  #     # args: 
+  #     #   - 
+  #   container_name: example_consumer_1
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   environment:
+  #     RABBITMQ_HOST: rabbitmq
+  #     RABBITMQ_DEFAULT_USER: myuser
+  #     RABBITMQ_DEFAULT_PASS: mypassword
+  #   command: ["python", "-u", "main.py"]
+  #   networks:
+  #     - fraud-detection-network
 
 volumes:
   prometheus-data:
