@@ -2,6 +2,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: fraud-detection-prometheus
+    hostname: prometheus
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml
@@ -16,12 +17,13 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - monitoring
+      - fraud-detection-network
     restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
     container_name: fraud-detection-grafana
+    hostname: grafana
     volumes:
       - grafana-data:/var/lib/grafana
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
@@ -35,7 +37,7 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - monitoring
+      - fraud-detection-network
     depends_on:
       - prometheus
     restart: unless-stopped
@@ -43,6 +45,7 @@ services:
   node-exporter:
     image: prom/node-exporter:latest
     container_name: fraud-detection-node-exporter
+    hostname: node-exporter
     command:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
@@ -55,12 +58,13 @@ services:
     ports:
       - "9100:9100"
     networks:
-      - monitoring
+      - fraud-detection-network
     restart: unless-stopped
 
   alertmanager:
     image: prom/alertmanager:latest
     container_name: fraud-detection-alertmanager
+    hostname: alertmanager
     volumes:
       - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
       - alertmanager-data:/alertmanager
@@ -70,7 +74,7 @@ services:
     ports:
       - "9093:9093"
     networks:
-      - monitoring
+      - fraud-detection-network
     restart: unless-stopped
 
   # Ollama - CPU version (recommended for most users)
@@ -82,7 +86,7 @@ services:
     volumes:
       - ollama-data:/root/.ollama
     networks:
-      - monitoring
+      - fraud-detection-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:11434/api/tags || exit 1"]
@@ -117,12 +121,19 @@ services:
     ports:
       - "8001:8001"
     environment:
-      - OLLAMA_HOST=http://localhost:11434
-    networks:
-      - monitoring
+      OLLAMA_HOST: http://ollama:11434
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_DEFAULT_USER: myuser
+      RABBITMQ_DEFAULT_PASS: mypassword
     depends_on:
-      - ollama
-      - prometheus
+      rabbitmq:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      prometheus:
+        condition: service_started
+    networks:
+      - fraud-detection-network
     restart: unless-stopped
 
   cdr-ingestion:
@@ -148,8 +159,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      postgres:
-        condition: service_healthy
+      # postgres:
+      #   condition: service_healthy
     networks:
       - fraud-detection-network
     restart: unless-stopped
@@ -170,6 +181,11 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: myuser
       RABBITMQ_DEFAULT_PASS: mypassword
+    command: >
+      bash -c "
+      rabbitmq-plugins enable --offline rabbitmq_prometheus &&
+      rabbitmq-server
+      "
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 10s
@@ -179,44 +195,44 @@ services:
       - fraud-detection-network
     restart: unless-stopped
 
-  postgres:
-    image: postgres:15-alpine
-    container_name: postgres_1
-    hostname: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: fraud_user
-      POSTGRES_PASSWORD: SecureDBPassword456!
-      POSTGRES_DB: cdr_database
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U fraud_user"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - fraud-detection-network
-    restart: unless-stopped
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: postgres_1
+  #   hostname: postgres
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: fraud_user
+  #     POSTGRES_PASSWORD: SecureDBPassword456!
+  #     POSTGRES_DB: cdr_database
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U fraud_user"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - fraud-detection-network
+  #   restart: unless-stopped
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
 
-  example_consumer_1:
-    build:
-      context: ./rabbit/
-      dockerfile: Dockerfile.consumer
-      # args: 
-      #   - 
-    container_name: example_consumer_1
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    environment:
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_DEFAULT_USER: myuser
-      RABBITMQ_DEFAULT_PASS: mypassword
-    command: ["python", "-u", "main.py"]
-    networks:
-      - fraud-detection-network
+  # example_consumer_1:
+  #   build:
+  #     context: ./rabbit/
+  #     dockerfile: Dockerfile.consumer
+  #     # args: 
+  #     #   - 
+  #   container_name: example_consumer_1
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   environment:
+  #     RABBITMQ_HOST: rabbitmq
+  #     RABBITMQ_DEFAULT_USER: myuser
+  #     RABBITMQ_DEFAULT_PASS: mypassword
+  #   command: ["python", "-u", "main.py"]
+  #   networks:
+  #     - fraud-detection-network
 
 volumes:
   prometheus-data:
@@ -230,3 +246,4 @@ networks:
   monitoring:
     driver: bridge
   fraud-detection-network:
+    driver: bridge

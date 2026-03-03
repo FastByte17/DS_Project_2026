@@ -137,20 +137,20 @@ async def ingest_cdr(record: CDRRecord):
             )
         
         # Save to database
-        try:
-            db_instance = get_db_service()
-            if db_instance:
-                db_result = db_instance.save_cdr(enriched_cdr)
-                if db_result:
-                    logger.info(f"CDR {record.transaction_id} saved to database")
-                else:
-                    logger.warning(f"Failed to save CDR {record.transaction_id} to database")
-        except Exception as e:
-            logger.error(f"Database error saving CDR {record.transaction_id}: {str(e)}")
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Database error: {str(e)}"
-            )
+        # try:
+        #     db_instance = get_db_service()
+        #     if db_instance:
+        #         db_result = db_instance.save_cdr(enriched_cdr)
+        #         if db_result:
+        #             logger.info(f"CDR {record.transaction_id} saved to database")
+        #         else:
+        #             logger.warning(f"Failed to save CDR {record.transaction_id} to database")
+        # except Exception as e:
+        #     logger.error(f"Database error saving CDR {record.transaction_id}: {str(e)}")
+        #     raise HTTPException(
+        #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        #         detail=f"Database error: {str(e)}"
+        #     )
         
         # Publish to RabbitMQ
         try:
@@ -195,7 +195,7 @@ async def ingest_batch_cdrs(records: list[CDRRecord]):
     
     results = {"total": len(records), "accepted": 0, "rejected": 0, "errors": []}
     
-    db_instance = get_db_service()
+    # db_instance = get_db_service()
     publisher_instance = get_publisher()
     
     for idx, record in enumerate(records):
@@ -215,15 +215,15 @@ async def ingest_batch_cdrs(records: list[CDRRecord]):
             # Enrich and save
             enriched_cdr = enrich_cdr(record)
             
-            db_saved = False
-            if db_instance:
-                db_saved = db_instance.save_cdr(enriched_cdr)
+            # db_saved = False
+            # if db_instance:
+            #     db_saved = db_instance.save_cdr(enriched_cdr)
             
             mq_published = False
             if publisher_instance:
                 mq_published = publisher_instance.publish(enriched_cdr)
             
-            if db_saved or mq_published:
+            if mq_published:
                 results["accepted"] += 1
             else:
                 results["rejected"] += 1
