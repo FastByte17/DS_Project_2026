@@ -2,6 +2,7 @@ import pika
 import json
 import os
 import time
+from prometheus_client import Counter
 
 class RabbitMQConsumer:
 
@@ -11,6 +12,7 @@ class RabbitMQConsumer:
         username=os.getenv("RABBITMQ_DEFAULT_USER", "NOT_SET"),
         password=os.getenv("RABBITMQ_DEFAULT_PASS", "NOT_SET"),
         queue_name="default_queue",
+        prometheus_c = Counter('example_counter', 'Description of counter')
     ):
         self.host = host
         self.username = username
@@ -19,6 +21,7 @@ class RabbitMQConsumer:
         self._connection = None
         self._channel = None
         self.initConnection()
+        self.prometheus_c = prometheus_c
 
     def initConnection(self):        
         cred = pika.PlainCredentials(self.username, self.password)
@@ -34,6 +37,7 @@ class RabbitMQConsumer:
     def process_message(self, message: dict):
         
         ### ADD MESSAGE PROCESSING HERE ### 
+        self.prometheus_c.inc(1)
         
         print(f"Processing message: {message}")
         time.sleep(5)
