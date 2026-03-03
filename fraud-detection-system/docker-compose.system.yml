@@ -155,8 +155,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      postgres:
-        condition: service_healthy
+      # postgres:
+      #   condition: service_healthy
     networks:
       - fraud-detection-network
     restart: unless-stopped
@@ -186,26 +186,26 @@ services:
       - fraud-detection-network
     restart: unless-stopped
 
-  postgres:
-    image: postgres:15-alpine
-    container_name: postgres_1
-    hostname: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: fraud_user
-      POSTGRES_PASSWORD: SecureDBPassword456!
-      POSTGRES_DB: cdr_database
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U fraud_user"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - fraud-detection-network
-    restart: unless-stopped
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: postgres_1
+  #   hostname: postgres
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: fraud_user
+  #     POSTGRES_PASSWORD: SecureDBPassword456!
+  #     POSTGRES_DB: cdr_database
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U fraud_user"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - fraud-detection-network
+  #   restart: unless-stopped
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
 
   # example_consumer_1:
   #   build:
