@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+
+WORKDIR /fraud_detector
+
+# Copy requirements for the consumer
+COPY rabbit/consumer/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the fraud detection consumer
+COPY rabbit/consumer/fraud_detector_consumer.py .
+
+# Copy the ML service
+COPY ml ./ml
+
+CMD ["python", "-u", "fraud_detector_consumer.py"]

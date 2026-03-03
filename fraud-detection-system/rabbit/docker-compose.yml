@@ -7,12 +7,6 @@ services:
     ports:
       - "5672:5672"     # AMQP
       - "15672:15672"   # Management UI
-      - "15692:15692"
-    command: >
-      bash -c "
-      rabbitmq-plugins enable --offline rabbitmq_prometheus &&
-      rabbitmq-server
-      "
     environment:
       RABBITMQ_DEFAULT_USER: myuser
       RABBITMQ_DEFAULT_PASS: mypassword
@@ -23,73 +17,21 @@ services:
       retries: 5
     restart: unless-stopped
 
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus/scrape.yml:/etc/prometheus/prometheus.yml
+  fraud_detector_consumer:
+    build:
+      context: ..
+      dockerfile: rabbit/Dockerfile.fraud_detector
+    container_name: fraud_detector_consumer_1
     depends_on:
-      - rabbitmq
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana-rabbit
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: myuser
+      RABBITMQ_PASSWORD: mypassword
+      CDR_INPUT_QUEUE: CDR
+      FRAUD_QUEUE: FRAUD_CDR
+      NORMAL_QUEUE: NORMAL_CDR
+      OLLAMA_HOST: http://ollama:11434
+    command: ["python", "-u", "fraud_detector_consumer.py"]
     restart: unless-stopped
-    ports:
-      - '3000:3000'
-    depends_on:
-    - prometheus
-
-  python_publisher_1:
-    build:
-      context: .
-      dockerfile: Dockerfile.publisher
-      args: 
-        - testarg=test
-    container_name: python_publisher_1
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    ports:
-      - "8081:8081"
-    environment:
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_DEFAULT_USER: myuser
-      RABBITMQ_DEFAULT_PASS: mypassword
-    command: ["fastapi", "run", "main.py", "--port" ,"8081"]
-
-  python_consumer_1:
-    build:
-      context: .
-      dockerfile: Dockerfile.consumer
-      # args: 
-      #   - 
-    container_name: python_consumer_1
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    environment:
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_DEFAULT_USER: myuser
-      RABBITMQ_DEFAULT_PASS: mypassword
-    command: ["python", "-u", "main.py"]
-
-  
-  python_consumer_2:
-    build:
-      context: .
-      dockerfile: Dockerfile.consumer
-      # args: 
-      #   - 
-    container_name: python_consumer_2
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    environment:
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_DEFAULT_USER: myuser
-      RABBITMQ_DEFAULT_PASS: mypassword
-    command: ["python", "-u", "main.py"]
-

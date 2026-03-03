@@ -3,10 +3,53 @@ import json
 from typing import Dict, List
 import pandas as pd
 from prometheus_client import Counter, Histogram
+from sklearn.ensemble import RandomForestClassifier
+import pickle
+import os
 
 # Metrics
 fraud_detected = Counter('fraud_detected_total', 'Frauds detected', ['method', 'fraud_type'])
 llm_latency = Histogram('llm_analysis_duration_seconds', 'LLM analysis time')
+
+def load_ml_model():
+    """Load pre-trained ML model or create a mock model"""
+    model_path = os.path.join(os.path.dirname(__file__), 'fraud_detection_model.pkl')
+    
+    # Try to load existing model
+    if os.path.exists(model_path):
+        try:
+            with open(model_path, 'rb') as f:
+                model = pickle.load(f)
+                print(f"✓ Loaded trained model from {model_path}")
+                return model
+        except Exception as e:
+            print(f"⚠ Error loading model from {model_path}: {e}")
+    
+    # Create mock model if no trained model exists
+    print("⚠ No trained model found. Creating mock model for testing...")
+    
+    # Create a simple RandomForest model for demonstration
+    # In production, this would be trained on historical fraud data
+    mock_model = RandomForestClassifier(
+        n_estimators=100,
+        max_depth=10,
+        random_state=42,
+        n_jobs=-1
+    )
+    
+    # Create dummy training data
+    X_dummy = [
+        [0.5, 1000, 0, 50, 60, 1, 10],  # Example features: risk_score, amount, fraud_flag, sim_hash, imei_hash, sim_status, name_len
+        [0.2, 500, 0, 30, 40, 1, 8],
+        [0.8, 15000, 1, 70, 80, 0, 12],
+        [0.1, 100, 0, 20, 25, 1, 5],
+    ]
+    y_dummy = [0, 0, 1, 0]  # Labels: 0=normal, 1=fraud
+    
+    mock_model.fit(X_dummy, y_dummy)
+    print("✓ Mock ML model created for fraud detection")
+    
+    return mock_model
 
 class FraudDetectionEngine:
     def __init__(self, ollama_host: str = "http://ollama:11434"):
@@ -211,25 +254,7 @@ Analysis:"""
         """Get blacklisted numbers (from DB/cache)"""
         # TODO: Load from database/Redis
         return {'+1234567890', '+9876543210'}
-    
-    # FastAPI endpoint
-from fastapi import FastAPI, HTTPException
 
-app = FastAPI(title="ML Fraud Detection Service")
-detector = FraudDetectionEngine()
-
-@app.post("/detect")
-async def detect_fraud_endpoint(cdr: Dict):
-    try:
-        result = detector.detect_fraud(cdr)
-        
-        # Send to Prometheus/Alertmanager if fraud detected
-        if result['is_fraud'] and result['confidence'] > 0.7:
-            send_alert_to_prometheus(cdr, result)
-        
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 def send_alert_to_prometheus(cdr: Dict, detection_result: Dict):
     """Send alert to Prometheus Alertmanager"""
@@ -258,3 +283,24 @@ def send_alert_to_prometheus(cdr: Dict, detection_result: Dict):
         "http://alertmanager:9093/api/v1/alerts",
         json=[alert]
     )
+
+
+# FastAPI endpoint - only import and run if executed directly
+if __name__ == "__main__":
+    from fastapi import FastAPI, HTTPException
+    
+    app = FastAPI(title="ML Fraud Detection Service")
+    detector = FraudDetectionEngine()
+    
+    @app.post("/detect")
+    async def detect_fraud_endpoint(cdr: Dict):
+        try:
+            result = detector.detect_fraud(cdr)
+            
+            # Send to Prometheus/Alertmanager if fraud detected
+            if result['is_fraud'] and result['confidence'] > 0.7:
+                send_alert_to_prometheus(cdr, result)
+            
+            return result
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))

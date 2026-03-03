@@ -1,3 +1,32 @@
 ﻿groups:
   - name: system_alerts
-    rules: []
+    rules: []  
+  - name: fraud_detection_alerts
+    interval: 30s
+    rules:
+      - alert: HighFraudDetectionRate
+        expr: rate(fraud_detected_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High fraud detection rate detected"
+          description: "Fraud detection rate is {{ $value }} frauds per second over the last 5 minutes"
+      
+      - alert: LLMAnalysisLatencyHigh
+        expr: histogram_quantile(0.95, llm_analysis_duration_seconds_bucket) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "LLM analysis latency is high"
+          description: "95th percentile latency is {{ $value }} seconds"
+      
+      - alert: CriticalFraudDetected
+        expr: fraud_detected_total{method="llm", fraud_type=~"sim_box|account_takeover"} > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical fraud type detected: {{ $labels.fraud_type }}"
+          description: "A critical fraud type ({{ $labels.fraud_type }}) has been detected by {{ $labels.method }} method"

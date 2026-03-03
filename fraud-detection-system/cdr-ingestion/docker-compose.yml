@@ -10,14 +10,16 @@ services:
     environment:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
-      RABBITMQ_DEFAULT_USER: myuser
-      RABBITMQ_DEFAULT_PASS: mypassword
-      CDR_QUEUE_NAME: CDR
+      RABBITMQ_USER: myuser
+      RABBITMQ_PASSWORD: mypassword
+      RABBITMQ_QUEUE: CDR
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_USER: fraud_user
       POSTGRES_PASSWORD: SecureDBPassword456!
       POSTGRES_DB: cdr_database
+      SERVICE_NAME: CDR-Ingestion-Service
+      SERVICE_VERSION: 1.0.0
       DEBUG: "False"
     depends_on:
       rabbitmq:
