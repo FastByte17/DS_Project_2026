@@ -427,9 +427,9 @@ def send_alert_to_prometheus(cdr: Dict, detection_result: Dict):
         
         # send to Alertmanager
         response = requests.post(
-            "http://alertmanager:9093/api/v1/alerts",
+            "http://alertmanager:9093/api/v2/alerts",
             json=[alert],
-            timeout=5
+            timeout=10
         )
         
         if response.status_code == 200:

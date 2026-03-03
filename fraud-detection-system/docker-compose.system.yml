@@ -16,7 +16,7 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - monitoring
+      - fraud-detection-network
     restart: unless-stopped
 
   grafana:
@@ -35,7 +35,7 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - monitoring
+      - fraud-detection-network
     depends_on:
       - prometheus
     restart: unless-stopped
@@ -55,12 +55,13 @@ services:
     ports:
       - "9100:9100"
     networks:
-      - monitoring
+      - fraud-detection-network
     restart: unless-stopped
 
   alertmanager:
     image: prom/alertmanager:latest
     container_name: fraud-detection-alertmanager
+    hostname: alertmanager
     volumes:
       - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
       - alertmanager-data:/alertmanager
@@ -70,7 +71,7 @@ services:
     ports:
       - "9093:9093"
     networks:
-      - monitoring
+      - fraud-detection-network
     restart: unless-stopped
 
   # Ollama - CPU version (recommended for most users)
@@ -82,7 +83,7 @@ services:
     volumes:
       - ollama-data:/root/.ollama
     networks:
-      - monitoring
+      - fraud-detection-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:11434/api/tags || exit 1"]
@@ -237,3 +238,4 @@ networks:
   monitoring:
     driver: bridge
   fraud-detection-network:
+    driver: bridge
