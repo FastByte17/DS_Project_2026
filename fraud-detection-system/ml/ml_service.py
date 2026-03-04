@@ -167,7 +167,7 @@ class FraudDetectionEngine:
 
     def _buffer_and_train(self, cdr: Dict):
         """add CDR to the training buffer and trigger batch training when full"""
-        label = 1 if cdr.get('fraud_flag', False) or cdr.get('risk_score', 0) > 0.8 else 0
+        label = 1 if cdr.get('fraud_flag', False) or cdr.get('risk_score', 0) > 0.5 else 0
         with self.training_lock:
             self.training_buffer.append((cdr, label))
             if len(self.training_buffer) >= self.BATCH_SIZE:
@@ -409,7 +409,7 @@ def send_alert_to_prometheus(cdr: Dict, detection_result: Dict):
             "labels": {
                 "alertname": "FraudDetected",
                 "severity": "critical" if detection_result['confidence'] > 0.9 else "warning",
-                "fraud_type": detection_result['fraud_type'],
+                "method": detection_result['method'],
                 "customer_id": str(cdr.get('customer_id', 'Unknown')),
                 "mobile_number": str(cdr.get('mobile_number', 'Unknown')),
                 "transaction_id": str(cdr.get('transaction_id', 'Unknown'))
@@ -418,7 +418,7 @@ def send_alert_to_prometheus(cdr: Dict, detection_result: Dict):
                 "summary": f"Fraud detected: {detection_result['fraud_type']}",
                 "description": detection_result['explanation'],
                 "confidence": str(detection_result['confidence']),
-                "method": detection_result['method'],
+                "1fraud_type": detection_result['fraud_type'],
                 "customer_name": str(cdr.get('full_name', 'Unknown')),
                 "city": str(cdr.get('city', 'Unknown')),
                 "amount_eur": str(cdr.get('amount_eur', 0))

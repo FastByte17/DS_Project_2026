@@ -81,6 +81,7 @@ services:
   ollama:
     image: ollama/ollama:latest
     container_name: fraud-detection-ollama
+    hostname: ollama
     ports:
       - "11434:11434"
     volumes:
@@ -120,6 +121,27 @@ services:
     container_name: ml-service
     ports:
       - "8001:8001"
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_DEFAULT_USER: myuser
+      RABBITMQ_DEFAULT_PASS: mypassword
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      prometheus:
+        condition: service_started
+    networks:
+      - fraud-detection-network
+    restart: unless-stopped
+
+  ml-service2:
+    build: ./ml/
+    container_name: ml-service2
+    ports:
+      - "8002:8001"
     environment:
       OLLAMA_HOST: http://ollama:11434
       RABBITMQ_HOST: rabbitmq
