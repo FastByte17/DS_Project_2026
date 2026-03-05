@@ -7848,60 +7848,60 @@
             },
             "transaction_logs": [
                 {
-                    "transaction_id": "e60c0913-1a24-4a12-b7b8-d363bcbae63a",
+                    "transaction_id": "8b757cf5-f655-44f0-943d-e32ef2fbb5ff",
                     "customer_id": "CUST-0093",
                     "type": "RECHARGE",
-                    "amount_eur": 5853.02,
-                    "timestamp": "2025-02-07T20:05:03.000000"
+                    "amount_eur": 361.92,
+                    "timestamp": "2025-03-13T18:03:04.000000"
                 },
                 {
-                    "transaction_id": "e9307aaa-7a57-4f1c-a331-bb589cd18414",
+                    "transaction_id": "4574758a-549d-4ee8-8db0-3531167d5c52",
                     "customer_id": "CUST-0093",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 6951.42,
-                    "timestamp": "2025-11-27T12:45:57.000000"
+                    "amount_eur": 610.64,
+                    "timestamp": "2025-02-12T17:03:58.000000"
                 },
                 {
-                    "transaction_id": "04fd6664-732e-4f97-862a-7e8d1b8d0458",
+                    "transaction_id": "b3c05237-d69a-4521-a4b3-47911cd33c26",
                     "customer_id": "CUST-0093",
                     "type": "DATA_USAGE",
-                    "amount_eur": 7048.42,
-                    "timestamp": "2025-07-05T21:03:59.000000"
+                    "amount_eur": 453.72,
+                    "timestamp": "2025-01-03T14:26:04.000000"
                 },
                 {
-                    "transaction_id": "7ca6d02e-b413-4733-9dc2-34e184fd7fa8",
+                    "transaction_id": "0ae820d5-0b75-403a-9e2a-90ed9bc707f8",
                     "customer_id": "CUST-0093",
                     "type": "VOICE_CALL",
-                    "amount_eur": 7934.98,
-                    "timestamp": "2025-01-06T21:28:18.000000"
+                    "amount_eur": 320.33,
+                    "timestamp": "2025-09-14T08:52:36.000000"
                 },
                 {
-                    "transaction_id": "d46742ff-acd5-46a0-80b7-5ba1d8a62a36",
+                    "transaction_id": "24d7f73a-5df9-45b8-b16e-8a98c7e97907",
                     "customer_id": "CUST-0093",
                     "type": "DEVICE_CHANGE",
-                    "amount_eur": 8153.59,
-                    "timestamp": "2025-10-26T13:45:35.000000"
+                    "amount_eur": 261.9,
+                    "timestamp": "2025-04-21T18:37:03.000000"
                 },
                 {
-                    "transaction_id": "fd23bf0d-168e-4f2c-beb9-57cd10786208",
+                    "transaction_id": "926c0bd8-4b61-4ac4-ad9e-ce6e68582bdb",
                     "customer_id": "CUST-0093",
                     "type": "RECHARGE",
-                    "amount_eur": 8017.75,
-                    "timestamp": "2025-05-09T13:35:53.000000"
+                    "amount_eur": 488.55,
+                    "timestamp": "2025-07-02T11:02:35.000000"
                 },
                 {
-                    "transaction_id": "238fdcd4-75af-4ae6-8f87-0922bdb50809",
+                    "transaction_id": "312d763f-dd75-4e8e-a894-a6991be80b61",
                     "customer_id": "CUST-0093",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 6251.03,
-                    "timestamp": "2025-11-08T14:02:20.000000"
+                    "amount_eur": 629.23,
+                    "timestamp": "2025-05-14T10:34:07.000000"
                 },
                 {
-                    "transaction_id": "6adf5c85-3983-4136-aa88-d79fcc7fa1e8",
+                    "transaction_id": "f88909e9-2dff-4be6-af02-894b96d3f39e",
                     "customer_id": "CUST-0093",
                     "type": "DATA_USAGE",
-                    "amount_eur": 6829.91,
-                    "timestamp": "2025-11-10T11:41:34.000000"
+                    "amount_eur": 485.46,
+                    "timestamp": "2025-09-27T18:11:06.000000"
                 }
             ]
         },
@@ -7933,60 +7933,60 @@
             },
             "transaction_logs": [
                 {
-                    "transaction_id": "1ddbbb2b-48eb-4cbc-b381-82cb885cdecc",
+                    "transaction_id": "9c909909-5170-439b-ab09-96177545825f",
                     "customer_id": "CUST-0094",
                     "type": "RECHARGE",
-                    "amount_eur": 6666.14,
-                    "timestamp": "2025-07-04T08:53:22.000000"
+                    "amount_eur": 490.8,
+                    "timestamp": "2025-11-07T13:06:35.000000"
                 },
                 {
-                    "transaction_id": "d41e3338-783f-4a67-97b2-9721e181d4dd",
+                    "transaction_id": "a35f06dc-c9cd-4c25-a245-6203f6b9ad56",
                     "customer_id": "CUST-0094",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 5927.45,
-                    "timestamp": "2025-04-21T16:33:04.000000"
+                    "amount_eur": 556.06,
+                    "timestamp": "2025-10-02T17:13:31.000000"
                 },
                 {
-                    "transaction_id": "41ad954b-d5b3-4a12-a208-77611951308f",
+                    "transaction_id": "561485a8-40d7-4533-b39e-f1f660b82c08",
                     "customer_id": "CUST-0094",
                     "type": "DATA_USAGE",
-                    "amount_eur": 6517.66,
-                    "timestamp": "2025-06-01T20:50:31.000000"
+                    "amount_eur": 540.2,
+                    "timestamp": "2025-07-25T13:29:37.000000"
                 },
                 {
-                    "transaction_id": "6350c882-c449-4376-9e8a-46016ed44a41",
+                    "transaction_id": "ae19acb1-d278-4425-a449-c18ac65ff865",
                     "customer_id": "CUST-0094",
                     "type": "VOICE_CALL",
-                    "amount_eur": 8612.88,
-                    "timestamp": "2025-02-07T15:17:55.000000"
+                    "amount_eur": 661.72,
+                    "timestamp": "2025-06-10T11:50:11.000000"
                 },
                 {
-                    "transaction_id": "0e79d89d-72db-452d-827f-9e0985d6a1b9",
+                    "transaction_id": "b1ddde61-e117-4c62-b183-bb4f72c1edea",
                     "customer_id": "CUST-0094",
                     "type": "DEVICE_CHANGE",
-                    "amount_eur": 6560.33,
-                    "timestamp": "2025-10-18T20:05:12.000000"
+                    "amount_eur": 549.5,
+                    "timestamp": "2025-04-03T17:19:33.000000"
                 },
                 {
-                    "transaction_id": "4e056903-36a6-4ec4-8859-a3f879b8e899",
+                    "transaction_id": "0ea06e44-03c3-4a7c-9012-d96017c536eb",
                     "customer_id": "CUST-0094",
                     "type": "RECHARGE",
-                    "amount_eur": 5988.98,
-                    "timestamp": "2025-05-25T22:48:54.000000"
+                    "amount_eur": 447.56,
+                    "timestamp": "2025-06-24T15:18:38.000000"
                 },
                 {
-                    "transaction_id": "81836b61-6b55-477a-b40d-e7de15d724c2",
+                    "transaction_id": "afc60289-1485-4782-bf15-446075ec52d8",
                     "customer_id": "CUST-0094",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 8664.8,
-                    "timestamp": "2025-10-10T08:37:38.000000"
+                    "amount_eur": 690.09,
+                    "timestamp": "2025-02-17T14:10:48.000000"
                 },
                 {
-                    "transaction_id": "8cfac050-3401-4401-a1ce-24868efa4fc6",
+                    "transaction_id": "a35c1771-6776-4068-8aa3-772cb8e61cb0",
                     "customer_id": "CUST-0094",
                     "type": "DATA_USAGE",
-                    "amount_eur": 5852.33,
-                    "timestamp": "2025-01-12T11:09:42.000000"
+                    "amount_eur": 371.03,
+                    "timestamp": "2025-08-14T08:42:04.000000"
                 }
             ]
         },
@@ -8018,60 +8018,60 @@
             },
             "transaction_logs": [
                 {
-                    "transaction_id": "017b7f64-ef58-45d5-bee0-6f0d0f3f6c79",
+                    "transaction_id": "d844cb22-b0f2-4c2f-871a-171e8cfda18f",
                     "customer_id": "CUST-0095",
                     "type": "RECHARGE",
-                    "amount_eur": 7183.64,
-                    "timestamp": "2025-06-24T13:11:07.000000"
+                    "amount_eur": 582.29,
+                    "timestamp": "2025-10-26T22:52:20.000000"
                 },
                 {
-                    "transaction_id": "f2160eb6-7e78-4609-b414-59ae497033d1",
+                    "transaction_id": "f505d6f9-7b69-441e-aae0-71f86e02463c",
                     "customer_id": "CUST-0095",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 8257.04,
-                    "timestamp": "2025-05-26T09:46:35.000000"
+                    "amount_eur": 370.06,
+                    "timestamp": "2025-06-20T15:37:51.000000"
                 },
                 {
-                    "transaction_id": "690877a0-f6ee-4c7e-af1e-e7623b27ba59",
+                    "transaction_id": "56a52e34-95f6-47d4-b6a8-71571e5fad70",
                     "customer_id": "CUST-0095",
                     "type": "DATA_USAGE",
-                    "amount_eur": 7092.44,
-                    "timestamp": "2025-12-18T09:50:10.000000"
+                    "amount_eur": 428.1,
+                    "timestamp": "2025-02-09T15:44:42.000000"
                 },
                 {
-                    "transaction_id": "8e9b31d9-8197-4bd4-aafa-7570bf855363",
+                    "transaction_id": "82cd747c-e1b4-4faa-9c4a-c20a371f8748",
                     "customer_id": "CUST-0095",
                     "type": "VOICE_CALL",
-                    "amount_eur": 7584.59,
-                    "timestamp": "2025-08-02T08:02:32.000000"
+                    "amount_eur": 232.5,
+                    "timestamp": "2025-12-23T12:41:36.000000"
                 },
                 {
-                    "transaction_id": "0b8f134a-d979-42f8-be68-329c8ebf6cb4",
+                    "transaction_id": "1fea5cad-68ec-4926-b976-d9648c1fc465",
                     "customer_id": "CUST-0095",
                     "type": "DEVICE_CHANGE",
-                    "amount_eur": 7527.33,
-                    "timestamp": "2025-07-21T19:08:26.000000"
+                    "amount_eur": 696.55,
+                    "timestamp": "2025-08-10T19:24:56.000000"
                 },
                 {
-                    "transaction_id": "8b4b1671-3c50-4b4c-9093-f8d398c526fe",
+                    "transaction_id": "b811f4a7-3fd3-479a-ae0a-75af92fc4773",
                     "customer_id": "CUST-0095",
                     "type": "RECHARGE",
-                    "amount_eur": 7522.97,
-                    "timestamp": "2025-06-03T13:46:42.000000"
+                    "amount_eur": 534.33,
+                    "timestamp": "2025-01-15T13:10:39.000000"
                 },
                 {
-                    "transaction_id": "caa82a96-d847-4956-a12c-364ee4926d09",
+                    "transaction_id": "e93247d5-11f0-4141-8e32-43908138ec35",
                     "customer_id": "CUST-0095",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 8069.84,
-                    "timestamp": "2025-06-06T18:05:21.000000"
+                    "amount_eur": 258.55,
+                    "timestamp": "2025-01-07T20:18:08.000000"
                 },
                 {
-                    "transaction_id": "96cecf21-2555-4088-9c4c-57b0efd2f93f",
+                    "transaction_id": "55da92e3-0c80-4060-982e-c18daa641fdb",
                     "customer_id": "CUST-0095",
                     "type": "DATA_USAGE",
-                    "amount_eur": 5517.33,
-                    "timestamp": "2025-11-28T21:30:19.000000"
+                    "amount_eur": 569.18,
+                    "timestamp": "2025-07-13T22:55:31.000000"
                 }
             ]
         },
@@ -8103,60 +8103,60 @@
             },
             "transaction_logs": [
                 {
-                    "transaction_id": "f6f45091-5e78-4d1e-a816-94eb4fa2bc55",
+                    "transaction_id": "b2a4be82-a866-4d39-9b38-be069784260d",
                     "customer_id": "CUST-0096",
                     "type": "RECHARGE",
-                    "amount_eur": 6035.76,
-                    "timestamp": "2025-05-18T16:07:20.000000"
+                    "amount_eur": 240.29,
+                    "timestamp": "2025-08-13T16:17:56.000000"
                 },
                 {
-                    "transaction_id": "20ff3613-4394-4594-bd2c-6f56a8d7d186",
+                    "transaction_id": "02f10bb3-3fc7-41a6-adeb-8ec7610f07c1",
                     "customer_id": "CUST-0096",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 7137.35,
-                    "timestamp": "2025-03-19T16:02:32.000000"
+                    "amount_eur": 268.46,
+                    "timestamp": "2025-07-28T16:17:45.000000"
                 },
                 {
-                    "transaction_id": "650b464e-ac0e-4c19-9d8b-955018cb88e3",
+                    "transaction_id": "d114d6c7-d880-4470-a37b-498c3b1134ed",
                     "customer_id": "CUST-0096",
                     "type": "DATA_USAGE",
-                    "amount_eur": 6396.79,
-                    "timestamp": "2025-04-10T14:35:13.000000"
+                    "amount_eur": 407.65,
+                    "timestamp": "2025-06-22T22:24:14.000000"
                 },
                 {
-                    "transaction_id": "9b9b00d3-5050-4137-871f-aa0366cb4a13",
+                    "transaction_id": "5c332c0e-9b07-4114-ad93-83d4f4ec7590",
                     "customer_id": "CUST-0096",
                     "type": "VOICE_CALL",
-                    "amount_eur": 8958.13,
-                    "timestamp": "2025-04-24T21:34:32.000000"
+                    "amount_eur": 275.46,
+                    "timestamp": "2025-03-05T11:42:14.000000"
                 },
                 {
-                    "transaction_id": "a9d4e88e-5603-4704-8da3-3e78384d9a05",
+                    "transaction_id": "9789ffd6-e1e5-4e06-8e62-dda0077f4c8c",
                     "customer_id": "CUST-0096",
                     "type": "DEVICE_CHANGE",
-                    "amount_eur": 6338.76,
-                    "timestamp": "2025-02-01T09:03:31.000000"
+                    "amount_eur": 206.03,
+                    "timestamp": "2025-10-06T12:18:00.000000"
                 },
                 {
-                    "transaction_id": "1a1c3ce6-8676-450c-b4d3-77929b277bdc",
+                    "transaction_id": "c103c8b6-f1ef-42a2-bb5b-5d0b45620e4a",
                     "customer_id": "CUST-0096",
                     "type": "RECHARGE",
-                    "amount_eur": 8270.88,
-                    "timestamp": "2025-12-19T11:44:47.000000"
+                    "amount_eur": 272.84,
+                    "timestamp": "2025-09-12T17:36:20.000000"
                 },
                 {
-                    "transaction_id": "7b330f5b-343a-4dc2-b9ca-d982a7c72791",
+                    "transaction_id": "d2b53edb-8df1-4fe2-8f75-171d74fc7da1",
                     "customer_id": "CUST-0096",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 6302.42,
-                    "timestamp": "2025-03-05T21:16:01.000000"
+                    "amount_eur": 676.55,
+                    "timestamp": "2025-12-28T16:39:41.000000"
                 },
                 {
-                    "transaction_id": "4a2ba5f3-3f59-4565-b940-4bb0c013fa38",
+                    "transaction_id": "343e4692-9909-45b6-a63b-2cc864846f13",
                     "customer_id": "CUST-0096",
                     "type": "DATA_USAGE",
-                    "amount_eur": 6984.01,
-                    "timestamp": "2025-10-17T09:18:36.000000"
+                    "amount_eur": 538.1,
+                    "timestamp": "2025-01-15T22:55:49.000000"
                 }
             ]
         },
@@ -8188,60 +8188,60 @@
             },
             "transaction_logs": [
                 {
-                    "transaction_id": "a3ef3d63-384d-4d90-b511-aede3f4332e5",
+                    "transaction_id": "8561ce5c-667a-46e5-b91b-30f6f647dc11",
                     "customer_id": "CUST-0097",
                     "type": "RECHARGE",
-                    "amount_eur": 6352.46,
-                    "timestamp": "2025-09-23T21:03:52.000000"
+                    "amount_eur": 675.94,
+                    "timestamp": "2025-11-26T16:25:25.000000"
                 },
                 {
-                    "transaction_id": "3dec9f22-1b13-45c2-9e92-e0ea42545cdc",
+                    "transaction_id": "e4a046a4-eb0d-417e-b908-e09c6ba36714",
                     "customer_id": "CUST-0097",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 6360.13,
-                    "timestamp": "2025-10-11T09:02:13.000000"
+                    "amount_eur": 399.49,
+                    "timestamp": "2025-02-16T18:25:03.000000"
                 },
                 {
-                    "transaction_id": "72cae19f-9ce4-4173-ba1f-6e826bd65196",
+                    "transaction_id": "c6014634-9dc5-4611-8681-cf3d7fd7d861",
                     "customer_id": "CUST-0097",
                     "type": "DATA_USAGE",
-                    "amount_eur": 7663.87,
-                    "timestamp": "2025-12-06T21:19:21.000000"
+                    "amount_eur": 295.3,
+                    "timestamp": "2025-04-15T10:07:21.000000"
                 },
                 {
-                    "transaction_id": "98c3ee99-5cbb-452c-8b5d-a41255eea0ff",
+                    "transaction_id": "830895c6-2a1a-4881-a1d4-9f7d07500e3d",
                     "customer_id": "CUST-0097",
                     "type": "VOICE_CALL",
-                    "amount_eur": 5794.01,
-                    "timestamp": "2025-08-19T22:11:00.000000"
+                    "amount_eur": 500.36,
+                    "timestamp": "2025-02-01T17:09:34.000000"
                 },
                 {
-                    "transaction_id": "f0292cd7-764d-4000-8412-f86c18566908",
+                    "transaction_id": "a8644235-c004-4e87-855c-8ce00030df02",
                     "customer_id": "CUST-0097",
                     "type": "DEVICE_CHANGE",
-                    "amount_eur": 6611.17,
-                    "timestamp": "2025-07-26T14:02:05.000000"
+                    "amount_eur": 250.73,
+                    "timestamp": "2025-06-20T08:04:55.000000"
                 },
                 {
-                    "transaction_id": "80134814-766b-4a6c-946d-9bff71bb8843",
+                    "transaction_id": "8eb6a0c2-862c-46d7-947d-466cc0213756",
                     "customer_id": "CUST-0097",
                     "type": "RECHARGE",
-                    "amount_eur": 8260.15,
-                    "timestamp": "2025-03-24T16:43:10.000000"
+                    "amount_eur": 303.98,
+                    "timestamp": "2025-07-05T18:16:22.000000"
                 },
                 {
-                    "transaction_id": "403e7371-4c06-426b-9a5b-7b62e93dff08",
+                    "transaction_id": "f7f7494f-91e0-4ff8-8a0e-f49ac44bdbee",
                     "customer_id": "CUST-0097",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 6029.32,
-                    "timestamp": "2025-06-25T10:13:12.000000"
+                    "amount_eur": 501.14,
+                    "timestamp": "2025-08-04T09:54:31.000000"
                 },
                 {
-                    "transaction_id": "bbf996c8-6bf8-4959-9d32-306dbccdd971",
+                    "transaction_id": "c269340e-9c51-4a93-979d-4526d8584727",
                     "customer_id": "CUST-0097",
                     "type": "DATA_USAGE",
-                    "amount_eur": 8737.14,
-                    "timestamp": "2025-11-11T19:04:00.000000"
+                    "amount_eur": 696.55,
+                    "timestamp": "2025-08-16T15:19:05.000000"
                 }
             ]
         },
@@ -8273,60 +8273,60 @@
             },
             "transaction_logs": [
                 {
-                    "transaction_id": "5ef4fbc2-5062-4489-bcc9-f32a20374472",
+                    "transaction_id": "6acaaa6c-bb5a-4770-8f83-8aa3606069c9",
                     "customer_id": "CUST-0098",
                     "type": "RECHARGE",
-                    "amount_eur": 8130.11,
-                    "timestamp": "2025-11-03T11:55:40.000000"
+                    "amount_eur": 272.06,
+                    "timestamp": "2025-12-11T19:16:30.000000"
                 },
                 {
-                    "transaction_id": "c892c3b1-45d3-414d-9287-600cd19087d9",
+                    "transaction_id": "c4b06a65-be26-49f1-bd9c-c41e3610f58b",
                     "customer_id": "CUST-0098",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 5676.14,
-                    "timestamp": "2025-06-26T14:05:41.000000"
+                    "amount_eur": 614.43,
+                    "timestamp": "2025-03-17T08:13:33.000000"
                 },
                 {
-                    "transaction_id": "41fd8f8c-95f5-44ad-b23d-d957166d3d7c",
+                    "transaction_id": "36294521-faaa-42ca-90ca-bc3c79eab0d8",
                     "customer_id": "CUST-0098",
                     "type": "DATA_USAGE",
-                    "amount_eur": 8011.06,
-                    "timestamp": "2025-06-19T10:51:31.000000"
+                    "amount_eur": 380.88,
+                    "timestamp": "2025-12-18T22:01:48.000000"
                 },
                 {
-                    "transaction_id": "e9c5d47f-8822-469c-8901-27457d19def8",
+                    "transaction_id": "7d4f84f2-6df6-4743-bb80-f564183c835b",
                     "customer_id": "CUST-0098",
                     "type": "VOICE_CALL",
-                    "amount_eur": 7854.51,
-                    "timestamp": "2025-12-16T10:16:53.000000"
+                    "amount_eur": 464.05,
+                    "timestamp": "2025-11-28T09:44:54.000000"
                 },
                 {
-                    "transaction_id": "ab0c136d-f4de-4d79-888f-6c64cf49e2a1",
+                    "transaction_id": "f877f4d7-e371-4bfd-b0e4-4a371e1bba20",
                     "customer_id": "CUST-0098",
                     "type": "DEVICE_CHANGE",
-                    "amount_eur": 7927.87,
-                    "timestamp": "2025-05-02T19:29:53.000000"
+                    "amount_eur": 330.56,
+                    "timestamp": "2025-06-06T13:49:14.000000"
                 },
                 {
-                    "transaction_id": "24b18686-78c8-4f2c-810b-a45f1824bbf3",
+                    "transaction_id": "ff01cfa9-ec11-46c1-b250-5980c41e674d",
                     "customer_id": "CUST-0098",
                     "type": "RECHARGE",
-                    "amount_eur": 8259.73,
-                    "timestamp": "2025-11-19T10:27:24.000000"
+                    "amount_eur": 466.3,
+                    "timestamp": "2025-09-11T18:14:39.000000"
                 },
                 {
-                    "transaction_id": "7e5fbb89-bbba-4450-bb36-e140d5325294",
+                    "transaction_id": "3f1539b9-9a70-49e1-af86-c04757a2af36",
                     "customer_id": "CUST-0098",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 8388.11,
-                    "timestamp": "2025-09-10T19:37:34.000000"
+                    "amount_eur": 605.76,
+                    "timestamp": "2025-04-26T11:52:25.000000"
                 },
                 {
-                    "transaction_id": "3b786f67-89b7-475d-968a-7e80677d3baf",
+                    "transaction_id": "4824d244-7f57-4540-ab5d-9ba61324ca6b",
                     "customer_id": "CUST-0098",
                     "type": "DATA_USAGE",
-                    "amount_eur": 7793.2,
-                    "timestamp": "2025-11-04T09:50:50.000000"
+                    "amount_eur": 569.94,
+                    "timestamp": "2025-04-07T16:31:22.000000"
                 }
             ]
         },
@@ -8358,60 +8358,60 @@
             },
             "transaction_logs": [
                 {
-                    "transaction_id": "9b705162-6209-4912-8da4-cce567c867b1",
+                    "transaction_id": "9963ed44-ef80-4674-87f8-fbfb488d9bbd",
                     "customer_id": "CUST-0099",
                     "type": "RECHARGE",
-                    "amount_eur": 7556.69,
-                    "timestamp": "2025-09-08T22:31:36.000000"
+                    "amount_eur": 565.5,
+                    "timestamp": "2025-01-26T12:30:16.000000"
                 },
                 {
-                    "transaction_id": "a33bdffb-1fed-4e2b-abd0-511f21e5b4c5",
+                    "transaction_id": "d83dcf7d-0c53-46ca-aa6b-709b022e9c65",
                     "customer_id": "CUST-0099",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 8678.42,
-                    "timestamp": "2025-11-23T08:25:42.000000"
+                    "amount_eur": 296.82,
+                    "timestamp": "2025-10-12T15:51:59.000000"
                 },
                 {
-                    "transaction_id": "555e6550-e714-4e61-b099-17b47010bd7d",
+                    "transaction_id": "56103e21-4c5e-419d-a839-b80be1ef4fd8",
                     "customer_id": "CUST-0099",
                     "type": "DATA_USAGE",
-                    "amount_eur": 8243.45,
-                    "timestamp": "2025-11-22T20:21:52.000000"
+                    "amount_eur": 561.56,
+                    "timestamp": "2025-06-12T09:14:06.000000"
                 },
                 {
-                    "transaction_id": "2a13528c-0e87-44e8-a163-eb59b32d6c57",
+                    "transaction_id": "cc07c55b-9bb2-4479-a1b3-17bd90fa7e56",
                     "customer_id": "CUST-0099",
                     "type": "VOICE_CALL",
-                    "amount_eur": 6826.57,
-                    "timestamp": "2025-02-08T18:43:53.000000"
+                    "amount_eur": 313.42,
+                    "timestamp": "2025-04-11T11:30:39.000000"
                 },
                 {
-                    "transaction_id": "333df50e-7f0b-47bf-b8cd-eff6083c7fcd",
+                    "transaction_id": "c7da7db9-eca1-4fb8-bb5e-e7b4943c0bd3",
                     "customer_id": "CUST-0099",
                     "type": "DEVICE_CHANGE",
-                    "amount_eur": 8271.3,
-                    "timestamp": "2025-11-20T22:53:27.000000"
+                    "amount_eur": 692.62,
+                    "timestamp": "2025-10-27T08:30:58.000000"
                 },
                 {
-                    "transaction_id": "d138dc7c-17f9-4329-aed5-7ae53d8b3977",
+                    "transaction_id": "025bd079-7ebc-452d-b27e-3965e50c354e",
                     "customer_id": "CUST-0099",
                     "type": "RECHARGE",
-                    "amount_eur": 8275.32,
-                    "timestamp": "2025-01-10T15:38:01.000000"
+                    "amount_eur": 526.49,
+                    "timestamp": "2025-11-03T21:42:07.000000"
                 },
                 {
-                    "transaction_id": "cba35b58-75d8-41df-89a2-ea90aa6f4330",
+                    "transaction_id": "db0b2f47-6774-4bc7-80d3-f43ea420e290",
                     "customer_id": "CUST-0099",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 8828.47,
-                    "timestamp": "2025-08-14T14:38:19.000000"
+                    "amount_eur": 654.89,
+                    "timestamp": "2025-12-25T11:30:56.000000"
                 },
                 {
-                    "transaction_id": "881cfb2f-f451-42f8-a6d9-9437b86fa3d5",
+                    "transaction_id": "2e132e57-2e04-42cc-84c0-6417965a5cfb",
                     "customer_id": "CUST-0099",
                     "type": "DATA_USAGE",
-                    "amount_eur": 7101.19,
-                    "timestamp": "2025-06-18T11:05:22.000000"
+                    "amount_eur": 289.26,
+                    "timestamp": "2025-11-11T09:51:46.000000"
                 }
             ]
         },
@@ -8443,60 +8443,60 @@
             },
             "transaction_logs": [
                 {
-                    "transaction_id": "53e3f1ad-9749-4c0f-9c89-36d56f8361e7",
+                    "transaction_id": "c982dd7e-988a-4ff4-adea-48d4e1110c03",
                     "customer_id": "CUST-0100",
                     "type": "RECHARGE",
-                    "amount_eur": 6675.38,
-                    "timestamp": "2025-05-06T19:56:28.000000"
+                    "amount_eur": 397.92,
+                    "timestamp": "2025-07-24T09:46:10.000000"
                 },
                 {
-                    "transaction_id": "a5dea57e-d55c-4da0-b0f8-598aaf4db3ae",
+                    "transaction_id": "bcc4d497-0822-4c92-869c-fed23192f4b9",
                     "customer_id": "CUST-0100",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 6926.06,
-                    "timestamp": "2025-09-26T11:07:13.000000"
+                    "amount_eur": 285.0,
+                    "timestamp": "2025-03-01T10:37:57.000000"
                 },
                 {
-                    "transaction_id": "d41e9d01-0403-460a-b5c3-332d2c76e52b",
+                    "transaction_id": "aa20ccbc-bfac-4e67-84ee-b08abb6399df",
                     "customer_id": "CUST-0100",
                     "type": "DATA_USAGE",
-                    "amount_eur": 7890.33,
-                    "timestamp": "2025-01-13T21:57:11.000000"
+                    "amount_eur": 432.68,
+                    "timestamp": "2025-11-05T17:52:38.000000"
                 },
                 {
-                    "transaction_id": "20ae163e-3572-483c-bb55-f3fecf046520",
+                    "transaction_id": "99044266-42c1-4118-9b13-b77fcaf0f338",
                     "customer_id": "CUST-0100",
                     "type": "VOICE_CALL",
-                    "amount_eur": 6863.84,
-                    "timestamp": "2025-06-05T13:10:14.000000"
+                    "amount_eur": 690.15,
+                    "timestamp": "2025-11-12T10:35:35.000000"
                 },
                 {
-                    "transaction_id": "233138ce-67f6-4d2a-9e47-dddc11a597bc",
+                    "transaction_id": "f45829c6-acf7-44fd-8682-4d8c7a8ce3c6",
                     "customer_id": "CUST-0100",
                     "type": "DEVICE_CHANGE",
-                    "amount_eur": 6730.42,
-                    "timestamp": "2025-10-13T12:31:20.000000"
+                    "amount_eur": 265.49,
+                    "timestamp": "2025-01-26T19:41:06.000000"
                 },
                 {
-                    "transaction_id": "e0c597f4-0639-4b03-bb85-e71e99aed0c2",
+                    "transaction_id": "a8488dcc-89f3-4e67-a193-4983c8931c0f",
                     "customer_id": "CUST-0100",
                     "type": "RECHARGE",
-                    "amount_eur": 8845.24,
-                    "timestamp": "2025-09-26T17:12:54.000000"
+                    "amount_eur": 463.29,
+                    "timestamp": "2025-03-14T21:12:52.000000"
                 },
                 {
-                    "transaction_id": "f8b5c183-8d5c-4844-b4b8-0f93ef8566d2",
+                    "transaction_id": "49489f0c-acbd-4689-bd93-e0bdcc4e0de7",
                     "customer_id": "CUST-0100",
                     "type": "INTERNATIONAL_CALL",
-                    "amount_eur": 8407.19,
-                    "timestamp": "2025-03-13T16:00:00.000000"
+                    "amount_eur": 636.95,
+                    "timestamp": "2025-01-09T11:18:32.000000"
                 },
                 {
-                    "transaction_id": "c990e541-892d-43c1-8995-cf098c24d62c",
+                    "transaction_id": "156cde7d-7f5d-47f8-945a-a242c9582b61",
                     "customer_id": "CUST-0100",
                     "type": "DATA_USAGE",
-                    "amount_eur": 8487.22,
-                    "timestamp": "2025-02-08T15:36:51.000000"
+                    "amount_eur": 320.27,
+                    "timestamp": "2025-10-11T12:34:26.000000"
                 }
             ]
         }
