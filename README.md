@@ -3,8 +3,7 @@
 ## Table of Contents
 - [Prerequisites](#prerequisites)
 - [Initial Setup](#initial-setup)
-- [Configuration Files](#configuration-files)
-- [Starting the Monitoring Stack](#starting-the-monitoring-stack)
+- [Starting the Stack](#starting-the-stack)
 - [Accessing Services](#accessing-services)
 - [Security Best Practices](#security-best-practices)
 - [Troubleshooting](#troubleshooting)
@@ -121,6 +120,11 @@ docker compose -f docker-compose.system.yml up -d
 ...
 ```
 
+You can stop the service with:
+```bash
+docker compose -f docker-compose.system.yml down
+```
+
 ### 6. Verify Services Are Running
 
 ```bash
@@ -167,6 +171,10 @@ Open your web browser and navigate to:
 2. Enter your credentials
 3. You'll see the Grafana home page
 
+**RabbitMQ Dashboard**
+- Add prometheus as data source
+- Create dashboard wit template id: 10991
+
 ### Prometheus
 - **URL**: http://localhost:9090
 - **Check targets**: http://localhost:9090/targets
@@ -179,6 +187,13 @@ Open your web browser and navigate to:
 ### Node Exporter Metrics
 - **URL**: http://localhost:9100/metrics
 - Raw metrics exported by Node Exporter
+
+### Ingestion Service Swagger
+- **URL**: http://localhost:8080/docs
+- Run payloads to service
+
+#### NOTE
+Use the docker compose file `docker-compose.system.yml` as a reference for default ports and credentials.
 
 ---
 
@@ -235,7 +250,7 @@ lsof -i :3000
 kill -9 <PID>
 ```
 
-**Alternative:** Change the port in `docker-compose.monitoring.yml`:
+**Alternative:** Change the port in `docker-compose.system.yml`:
 ```yaml
 ports:
   - "3001:3000"  # Use 3001 instead of 3000
@@ -293,11 +308,11 @@ docker compose -f docker-compose.system.yml logs -f
 1. Wait 30 seconds for Grafana to fully start
 2. Check if Prometheus is running:
    ```bash
-   docker-compose -f docker-compose.monitoring.yml ps prometheus
+   docker-compose -f docker-compose.system.yml ps prometheus
    ```
 3. Restart Grafana:
    ```bash
-   docker-compose -f docker-compose.monitoring.yml restart grafana
+   docker-compose -f docker-compose.system.yml restart grafana
    ```
 
 ---
@@ -310,21 +325,6 @@ docker compose -f docker-compose.system.yml logs -f
 | Prometheus | 9090 | http://localhost:9090 | Metrics collection & queries |
 | Node Exporter | 9100 | http://localhost:9100/metrics | System metrics |
 | Alertmanager | 9093 | http://localhost:9093 | Alert management |
-
----
-
-## Next Steps
-
-After successfully setting up the monitoring stack:
-
-1. ✅ **Log in to Grafana** at http://localhost:3000
-2. ✅ **Import pre-built dashboards**
-   - Go to Dashboards → Import
-   - Import Node Exporter Full dashboard (ID: 1860)
-3. ✅ **Configure alerts** in Alertmanager for your team
-4. ✅ **Add your fraud detection services** to Prometheus scrape configs
-5. ✅ **Create custom dashboards** for CDR ingestion, fraud detection metrics
-6. ✅ **Set up email/Slack notifications** in Alertmanager
 
 ---
 
