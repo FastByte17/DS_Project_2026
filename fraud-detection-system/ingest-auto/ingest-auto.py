@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import random
 import sys
 import time
 import urllib.request
@@ -111,7 +112,8 @@ def main():
 
     print(f"loading dataset: {args.dataset}")
     records = load_records(args.dataset)
-    print(f"loaded {len(records)} CDR records (flattened from customers + transaction logs)")
+    random.shuffle(records)
+    print(f"loaded {len(records)} CDR records (flattened from customers + transaction logs, shuffled)")
 
     print(f"target: {args.url}/ingest/batch | batch_size={args.batch_size} | delay={args.delay}s\n")
     send_batches(records, args.url, args.batch_size, args.delay)
