@@ -8,7 +8,6 @@
 - [Accessing Services](#accessing-services)
 - [Security Best Practices](#security-best-practices)
 - [Troubleshooting](#troubleshooting)
-- [Common Commands](#common-commands)
 
 ---
 
@@ -45,320 +44,64 @@ cd fraud-detection-system
 
 ### 2. Set Up Environment Variables
 
-#### Windows (PowerShell):
-```powershell
-# Copy the example file
-Copy-Item .env.example .env
+Create .env file in ´/fraud-detection-system/´ with the example content. 
 
-# Edit with Notepad
-notepad .env
+Feel free to change the credentials.
 
-# Or edit with VS Code
-code .env
+Example content:
+
 ```
-
-#### Linux/Mac (Terminal):
-```bash
-# Copy the example file
-cp .env.example .env
-
-# Edit with nano
-nano .env
-
-# Or edit with your favorite editor
-vim .env
-# or
-code .env
-```
-
-#### Edit the `.env` file with your credentials:
-```env
 # Grafana Credentials
-GRAFANA_ADMIN_USER=XXXXXXXXX
-GRAFANA_ADMIN_PASSWORD=XXXXXXXXXX
+GRAFANA_ADMIN_USER=FOOBAR
+GRAFANA_ADMIN_PASSWORD=FOOBAR123
+
+# Alertmanager Email Configuration
+ALERTMANAGER_EMAIL=your-email@example.com
+ALERTMANAGER_EMAIL_PASSWORD=your-app-password
 
 ```
----
 
-## Configuration Files
 
-Before starting the services, you need to create the required configuration files.
+Create a .env file for environment settings in ´/fraud-detection-system/cdr-ingestion´ directory. 
 
-### 3. Create Directory Structure and Configuration Files
-
-#### Windows (PowerShell):
-
-Open `setup-config.ps1` and run it:
-
-```powershell
-# Create directories
-New-Item -ItemType Directory -Force -Path "monitoring\prometheus"
-New-Item -ItemType Directory -Force -Path "monitoring\grafana\provisioning\datasources"
-New-Item -ItemType Directory -Force -Path "monitoring\grafana\provisioning\dashboards"
-New-Item -ItemType Directory -Force -Path "monitoring\grafana\dashboards"
-New-Item -ItemType Directory -Force -Path "monitoring\alertmanager"
-
-# Create prometheus.yml
-@"
-global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
-  external_labels:
-    cluster: 'fraud-detection-system'
-    environment: 'development'
-
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets:
-            - alertmanager:9093
-
-rule_files:
-  - "alerts.yml"
-
-scrape_configs:
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['localhost:9090']
-
-  - job_name: 'node-exporter'
-    static_configs:
-      - targets: ['node-exporter:9100']
-"@ | Out-File -FilePath "monitoring\prometheus\prometheus.yml" -Encoding utf8
-
-# Create alerts.yml
-@"
-groups:
-  - name: fraud_detection_alerts
-    interval: 30s
-    rules:
-      - alert: HighCPUUsage
-        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "High CPU usage detected"
-          description: "CPU usage is {{ `$value }}% on {{ `$labels.instance }}"
-
-      - alert: HighMemoryUsage
-        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "High memory usage"
-          description: "Memory usage is {{ `$value }}%"
-"@ | Out-File -FilePath "monitoring\prometheus\alerts.yml" -Encoding utf8
-
-# Create alertmanager.yml
-@"
-global:
-  resolve_timeout: 5m
-
-route:
-  group_by: ['alertname', 'cluster', 'service']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 12h
-  receiver: 'default-receiver'
-
-receivers:
-  - name: 'default-receiver'
-    webhook_configs:
-      - url: 'http://localhost:8003/webhook/alerts'
-        send_resolved: true
-
-inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'cluster', 'service']
-"@ | Out-File -FilePath "monitoring\alertmanager\alertmanager.yml" -Encoding utf8
-
-# Create Grafana datasource configuration
-@"
-apiVersion: 1
-
-datasources:
-  - name: Prometheus
-    type: prometheus
-    access: proxy
-    url: http://prometheus:9090
-    isDefault: true
-    editable: false
-    jsonData:
-      timeInterval: "15s"
-"@ | Out-File -FilePath "monitoring\grafana\provisioning\datasources\prometheus.yml" -Encoding utf8
-
-# Create Grafana dashboard provisioning
-@"
-apiVersion: 1
-
-providers:
-  - name: 'Fraud Detection Dashboards'
-    orgId: 1
-    folder: ''
-    type: file
-    disableDeletion: false
-    updateIntervalSeconds: 30
-    allowUiUpdates: true
-    options:
-      path: /var/lib/grafana/dashboards
-"@ | Out-File -FilePath "monitoring\grafana\provisioning\dashboards\dashboard.yml" -Encoding utf8
-
-Write-Host "✅ All configuration files created successfully!"
+Example content:
 ```
+# =========================
+# RabbitMQ Configuration
+# =========================
+RABBITMQ_HOST=rabbitmq
+RABBITMQ_PORT=5672
+RABBITMQ_USER=myuser
+RABBITMQ_PASSWORD=mypassword
+RABBITMQ_QUEUE=CDR
 
-Run the script:
-```powershell
-.\setup-config.ps1
-```
+# =========================
+# PostgreSQL Configuration
+# =========================
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=cdr_database
 
-#### Linux/Mac (Bash):
-
-Save this as `setup-config.sh` and run it:
-
-```bash
-#!/bin/bash
-
-# Create directories
-mkdir -p monitoring/prometheus
-mkdir -p monitoring/grafana/provisioning/datasources
-mkdir -p monitoring/grafana/provisioning/dashboards
-mkdir -p monitoring/grafana/dashboards
-mkdir -p monitoring/alertmanager
-
-# Create prometheus.yml
-cat > monitoring/prometheus/prometheus.yml <<'EOF'
-global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
-  external_labels:
-    cluster: 'fraud-detection-system'
-    environment: 'development'
-
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets:
-            - alertmanager:9093
-
-rule_files:
-  - "alerts.yml"
-
-scrape_configs:
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['localhost:9090']
-
-  - job_name: 'node-exporter'
-    static_configs:
-      - targets: ['node-exporter:9100']
-EOF
-
-# Create alerts.yml
-cat > monitoring/prometheus/alerts.yml <<'EOF'
-groups:
-  - name: fraud_detection_alerts
-    interval: 30s
-    rules:
-      - alert: HighCPUUsage
-        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "High CPU usage detected"
-          description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
-
-      - alert: HighMemoryUsage
-        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "High memory usage"
-          description: "Memory usage is {{ $value }}%"
-EOF
-
-# Create alertmanager.yml
-cat > monitoring/alertmanager/alertmanager.yml <<'EOF'
-global:
-  resolve_timeout: 5m
-
-route:
-  group_by: ['alertname', 'cluster', 'service']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 12h
-  receiver: 'default-receiver'
-
-receivers:
-  - name: 'default-receiver'
-    webhook_configs:
-      - url: 'http://localhost:8003/webhook/alerts'
-        send_resolved: true
-
-inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'cluster', 'service']
-EOF
-
-# Create Grafana datasource configuration
-cat > monitoring/grafana/provisioning/datasources/prometheus.yml <<'EOF'
-apiVersion: 1
-
-datasources:
-  - name: Prometheus
-    type: prometheus
-    access: proxy
-    url: http://prometheus:9090
-    isDefault: true
-    editable: false
-    jsonData:
-      timeInterval: "15s"
-EOF
-
-# Create Grafana dashboard provisioning
-cat > monitoring/grafana/provisioning/dashboards/dashboard.yml <<'EOF'
-apiVersion: 1
-
-providers:
-  - name: 'Fraud Detection Dashboards'
-    orgId: 1
-    folder: ''
-    type: file
-    disableDeletion: false
-    updateIntervalSeconds: 30
-    allowUiUpdates: true
-    options:
-      path: /var/lib/grafana/dashboards
-EOF
-
-echo "✅ All configuration files created successfully!"
-```
-
-Make it executable and run:
-```bash
-chmod +x setup-config.sh
-./setup-config.sh
+# =========================
+# Service Configuration
+# =========================
+SERVICE_NAME=SERVICE
+SERVICE_VERSION=1.0
+DEBUG=False
 ```
 
 ---
 
-## Starting the Monitoring Stack
+## Starting the Stack
 
 ### 4. Validate Configuration
 
 Before starting, validate your docker-compose file:
 
 ```bash
-docker-compose -f docker-compose.monitoring.yml config
+docker compose -f docker-compose.system.yml config
 ```
 
 If there are no errors, you'll see the parsed configuration.
@@ -366,35 +109,46 @@ If there are no errors, you'll see the parsed configuration.
 ### 5. Start All Services
 
 ```bash
-docker-compose -f docker-compose.monitoring.yml up -d
+docker compose -f docker-compose.system.yml up -d
 ```
 
-**Expected output:**
+**Expected output:** NOTE this may differ if your run it the first time.
 ```
-[+] Running 8/8
- ✔ Network fraud-detection_monitoring           Created
- ✔ Volume fraud-detection_prometheus-data       Created
- ✔ Volume fraud-detection_grafana-data          Created
- ✔ Volume fraud-detection_alertmanager-data     Created
- ✔ Container fraud-detection-prometheus         Started
- ✔ Container fraud-detection-alertmanager       Started
- ✔ Container fraud-detection-node-exporter      Started
- ✔ Container fraud-detection-grafana            Started
+[+] up 9/9
+ ✔ Container fraud-detection-alertmanager  Started                                                                                                                                                                                     0.4ss
+ ✔ Container fraud-detection-prometheus    Started                                                                                                                                                                                     0.4ss
+ ✔ Container fraud-detection-grafana       Started                                                                                                                                                                                     0.5ss
+...
 ```
 
 ### 6. Verify Services Are Running
 
 ```bash
-docker-compose -f docker-compose.monitoring.yml ps
+docker container ps
 ```
 
 **Expected output:**
 ```
-NAME                              STATUS
-fraud-detection-prometheus        Up
-fraud-detection-grafana           Up
-fraud-detection-node-exporter     Up
-fraud-detection-alertmanager      Up
+CONTAINER ID   IMAGE                                  COMMAND                  CREATED          STATUS                     PORTS                                                                                                                                                     NAMES
+1ba852b7c0a2   grafana/grafana:latest                 "/run.sh"                5 minutes ago    Up 5 minutes               0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp                                                                                                               fraud-detection-grafana
+1f7805fde75c   prom/prometheus:latest                 "/bin/prometheus --c…"   5 minutes ago    Up 5 minutes               0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp                                                                                                               fraud-detection-prometheus
+51057b47d1ce   prom/alertmanager:latest               "/bin/alertmanager -…"   5 minutes ago    Up 5 minutes               0.0.0.0:9093->9093/tcp, [::]:9093->9093/
+...
+```
+
+### 7. Add Llama3.2 model to OLlama container
+
+```bash
+docker exec -it fraud-detection-ollama ollama pull llama3.2
+```
+
+### (Optional) 8. Run a example payload to the service
+
+Go to /fraud-detection-system/ingest-auto/
+
+Run test script:
+```bash
+python ingest-auto.py
 ```
 
 ---
@@ -412,7 +166,6 @@ Open your web browser and navigate to:
 1. Navigate to http://localhost:3000
 2. Enter your credentials
 3. You'll see the Grafana home page
-4. Prometheus datasource is already configured
 
 ### Prometheus
 - **URL**: http://localhost:9090
@@ -512,41 +265,19 @@ sudo usermod -aG docker $USER
 
 ---
 
-### Issue: Configuration file not found
-
-**Verify files exist:**
-
-**Windows (PowerShell):**
-```powershell
-Test-Path monitoring\prometheus\prometheus.yml
-Test-Path monitoring\prometheus\alerts.yml
-Test-Path monitoring\alertmanager\alertmanager.yml
-```
-
-**Linux/Mac:**
-```bash
-ls -la monitoring/prometheus/prometheus.yml
-ls -la monitoring/prometheus/alerts.yml
-ls -la monitoring/alertmanager/alertmanager.yml
-```
-
-If files don't exist, run the setup script again (Step 3).
-
----
-
 ### Issue: Services keep restarting
 
 **View logs to diagnose:**
 ```bash
 # View all logs
-docker-compose -f docker-compose.monitoring.yml logs
+docker compose -f docker-compose.system.yml logs
 
 # View specific service logs
-docker-compose -f docker-compose.monitoring.yml logs grafana
-docker-compose -f docker-compose.monitoring.yml logs prometheus
+docker compose -f docker-compose.system.yml logs grafana
+docker compose -f docker-compose.system.yml logs prometheus
 
 # Follow logs in real-time
-docker-compose -f docker-compose.monitoring.yml logs -f
+docker compose -f docker-compose.system.yml logs -f
 ```
 
 **Common causes:**
@@ -568,46 +299,6 @@ docker-compose -f docker-compose.monitoring.yml logs -f
    ```bash
    docker-compose -f docker-compose.monitoring.yml restart grafana
    ```
-
----
-
-## Common Commands
-
-### Service Management
-
-| Action | Command |
-|--------|---------|
-| Start all services | `docker-compose -f docker-compose.monitoring.yml up -d` |
-| Stop all services | `docker-compose -f docker-compose.monitoring.yml down` |
-| Restart all services | `docker-compose -f docker-compose.monitoring.yml restart` |
-| Stop and remove volumes (⚠️ deletes data!) | `docker-compose -f docker-compose.monitoring.yml down -v` |
-
-### Monitoring
-
-| Action | Command |
-|--------|---------|
-| View status | `docker-compose -f docker-compose.monitoring.yml ps` |
-| View all logs | `docker-compose -f docker-compose.monitoring.yml logs` |
-| Follow logs | `docker-compose -f docker-compose.monitoring.yml logs -f` |
-| View specific service logs | `docker-compose -f docker-compose.monitoring.yml logs grafana` |
-
-### Individual Service Control
-
-| Action | Command |
-|--------|---------|
-| Restart Grafana | `docker-compose -f docker-compose.monitoring.yml restart grafana` |
-| Restart Prometheus | `docker-compose -f docker-compose.monitoring.yml restart prometheus` |
-| Stop Grafana | `docker-compose -f docker-compose.monitoring.yml stop grafana` |
-| Start Grafana | `docker-compose -f docker-compose.monitoring.yml start grafana` |
-
-### Maintenance
-
-| Action | Command |
-|--------|---------|
-| Rebuild containers | `docker-compose -f docker-compose.monitoring.yml up -d --force-recreate` |
-| Pull latest images | `docker-compose -f docker-compose.monitoring.yml pull` |
-| Remove unused volumes | `docker volume prune` |
-| Remove unused images | `docker image prune` |
 
 ---
 
@@ -641,43 +332,13 @@ After successfully setting up the monitoring stack:
 
 If you encounter issues not covered in this guide:
 
-1. **Check logs**: `docker-compose -f docker-compose.monitoring.yml logs`
-2. **Verify services**: `docker-compose -f docker-compose.monitoring.yml ps`
+1. **Check logs**
+2. **Verify services**
 3. **Check Docker Desktop** is running (Windows/Mac)
 4. **Verify ports** are not in use by other applications
 5. **Review configuration files** for syntax errors
 6. **Consult Docker documentation**: https://docs.docker.com/
 7. **Create an issue** in the project repository
-
----
-
-## Project Structure
-
-```
-fraud-detection-system/
-├── docker-compose.monitoring.yml
-├── .env                          # ⚠️ DO NOT COMMIT
-├── .env.example                  # ✅ Commit this
-├── .gitignore                    # Must include .env
-├── README.md                     # This file
-├── monitoring/
-│   ├── prometheus/
-│   │   ├── prometheus.yml
-│   │   └── alerts.yml
-│   ├── grafana/
-│   │   ├── provisioning/
-│   │   │   ├── datasources/
-│   │   │   │   └── prometheus.yml
-│   │   │   └── dashboards/
-│   │   │       └── dashboard.yml
-│   │   └── dashboards/
-│   └── alertmanager/
-│       └── alertmanager.yml
-└── services/
-    ├── cdr-ingestion/
-    ├── fraud-detection/
-    └── ...
-```
 
 ---
 
@@ -692,4 +353,4 @@ TBD
 
 ---
 
-**Last Updated**: February 2026
+**Last Updated**: March 2026
