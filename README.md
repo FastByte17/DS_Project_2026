@@ -192,6 +192,9 @@ Open your web browser and navigate to:
 - **URL**: http://localhost:8080/docs
 - Run payloads to service
 
+### RabbitMQ Administration
+- **URL**: http://localhost:15672/
+
 #### NOTE
 Use the docker compose file `docker-compose.system.yml` as a reference for default ports and credentials.
 
